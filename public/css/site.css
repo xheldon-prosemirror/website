@@ -276,6 +276,33 @@ p, dl, dd, ul, ol, pre { margin-bottom: 23px }
 
 p, dl { margin-top: 1em; }
 
+/* show en source*/
+p { position: relative; }
+p[lang="cn"]::after {
+  content: attr(data-en);
+  display: block;
+  transition: all .2s .3s;
+  visibility: hidden;
+  opacity: 0;
+  background: #cccccc;
+  z-index: 1;
+  border-radius: 8px;
+  padding: 10px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+p[lang="cn"]:hover::after {
+  visibility: visible;
+  opacity: 1;
+}
+
+p[type="comment"] {
+  border-radius: 6px;
+  padding: 6px;
+  background: #eee;
+}
+
 ul.grid-list h3 {
   margin: 0 0 9px;
   line-height: 1;

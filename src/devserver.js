@@ -1,12 +1,17 @@
 const {createServer} = require("http")
 const path = require("path"), fs = require("fs")
 const {parse: parseURL} = require("url")
+const child = require("child_process")
 
 const ModuleServer = require("moduleserve/moduleserver")
 const {handleCollabRequest} = require("./collab/server/server")
 const ecstatic = require("ecstatic")
 const {buildFile} = require("./build/buildfile")
 const tariff = require("tariff")
+
+const mods = ["model", "transform", "state", "view",
+  "keymap", "inputrules", "history", "collab", "commands", "gapcursor",
+  "schema-basic", "schema-list"];
 
 let port = 8000
 const root = path.resolve(__dirname, "../public/")
@@ -21,6 +26,24 @@ for (let i = 2; i < process.argv.length; i++) {
   if (arg == "--port") port = +process.argv[++i]
   else if (arg == "--help") usage(0)
   else usage(1)
+}
+
+function run(cmd, args, wd) {
+  return child.execFileSync(cmd, args, {cwd: wd, encoding: "utf8", stdio: ["ignore", "pipe", process.stderr]})
+}
+
+function build() {
+  const update = [];
+  mods.forEach(repo => {
+    let output = run("git", ["status", "-sb"], '../' + repo);
+    if (output !== "## master...origin/master\n") {
+      update.push(repo);
+    }
+  })
+  update.forEach(repo => {
+    console.log(`build ${repo}...`);
+    run("npm", ["run", "build"], '../' + repo)
+  });
 }
 
 let moduleServer = new ModuleServer({
@@ -61,7 +84,7 @@ function maybeCollab(req, resp) {
   }
   return false
 }
-
+// TODO: rebuild modules when they change for docs/ref generator
 createServer((req, resp) => {
   maybeCollab(req, resp) ||
     moduleServer.handleRequest(req, resp) ||
