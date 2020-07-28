@@ -17,9 +17,7 @@ module.exports = function loadTemplates(config) {
     let md = options.text
     if (config.markdownFilter) md = config.markdownFilter(md)
     if (options.anchors) md = headerAnchors(md, options.anchors === true ? "" : options.anchors + ".")
-    console.log('md:', md.slice(0, 100));
     let html = markdown.render(md)
-    console.log('html:',html.slice(0,100));
     if (options.shiftHeadings) html = html.replace(/<(\/?)h(\d)\b/ig, (_, cl, d) => "<" + cl + "h" + (+d + options.shiftHeadings))
     return html
   }
