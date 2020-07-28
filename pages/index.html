@@ -1,6 +1,6 @@
 <<head {
   type: "frontpage",
-  title: "ProseMirror",
+  title: "ProseMirror 中文",
   meta: {"og:title": "ProseMirror",
          "og:type": "website",
          "og:url": "https://prosemirror.net/",
@@ -21,99 +21,73 @@
   <p>在这个地方尝试输入内容，或者到 <a href="examples">examples</a>查看更多示例！</p>
 </div>
 
-<p>An ideal content editor produces structured, semantically
-meaningful documents, but does so in a way that is easy for users to
-understand. ProseMirror tries to bridge the gap
-between <a href="http://commonmark.org/">Markdown</a> text editing and
-classical <a href="https://en.wikipedia.org/wiki/WYSIWYG">WYSIWYG</a>
-editors.</p>
+<p>一个理想的富文本编辑器产生结构化的、语义化的、有意义的文档的同时还要能够让用户能够容易的理解与使用。ProseMirror 试着在
+  <a href="http://commonmark.org/">Markdown</a> 编辑体验和传统的 <a href="https://en.wikipedia.org/wiki/WYSIWYG">WYSIWYG</a>
+编辑体验中寻找一种融合的方法。</p>
 
-<p>It does this by implementing a WYSIWYG-style editing interface for
-documents more constrained and structured than plain HTML. You can
-customize the shape and structure of the documents your editor
-creates, and tailor them to your application's needs.</p>
+<p>它通过实现一个比普通的 HTML 具有更多的限制和结构化的 WYSIWYG 风格的接口来做到这点。你可以自定义编辑器创建的文档的结构和内容，使它们符合你应用的需要。</p>
 
-<h2 class=hr id=features>Features</h2>
+<h2 class=hr id=features>特点</h2>
 
 <ul class=grid-list>
   <li>
-    <h3>Collaborative editing</h3>
-    <p>ProseMirror has built-in, ground-up, rock solid support for
-    collaborative editing, where multiple people work on the same
-    document in real time.</p>
+    <h3>实时协同编辑</h3>
+    <p>ProseMirror 内置了对实时协同编辑的坚定支持，它允许多个人同时对一个文档进行编辑。</p>
   </li>
   <li>
-    <h3>Extensible schemas</h3>
-    <p>Document schemas allow editing documents with a custom
-    structure without writing your own editor from scratch.</p>
+    <h3>可扩展的文档结构</h3>
+    <p>文档结构（Document schemas）允许使用自定义的文档结构而无需从头开始编写自己的编辑器。</p>
   </li>
   <li>
-    <h3>Modular</h3>
-    <p>A modular architecture makes sure you only load the code you
-    need, and can replace parts of the system as needed.</p>
+    <h3>模块化</h3>
+    <p>模块机制确保你只载入自己需要的模块，同时能够按需替换已有的模块。</p>
   </li>
   <li>
-    <h3>Pluggable</h3>
-    <p>A plugin system allows you to easily enable additional
-    functionality, and package your own extensions in a convenient
-    format.</p>
+    <h3>插件化</h3>
+    <p>插件系统允许你容易地增加额外的功能，同时以一种简单的方式打包你的插件。</p>
   </li>
   <li>
-    <h3>Functional</h3>
-    <p>A largely functional and immutable architecture makes it easy
-    to integrate ProseMirror into modern web apps, and confidently
-    implement complex behavior.</p>
+    <h3>函数式</h3>
+    <p>一个函数式和不可变数据结构让 ProseMirror 很容易的与现代 web app 集成，以实现复杂的编辑行为。</p>
   </li>
   <li>
-    <h3>Unopinionated</h3>
-    <p>The core library is small and generic, providing a base onto
-    which very different types of editors can be built.</p>
+    <h3>定制化</h3>
+    <p>核心库小巧且通用，为构建不同类型的编辑器提供基础支持。</p>
   </li>
 </ul>
 
-<h2 class=hr id=about>About</h2>
+<h2 class=hr id=about>关于</h2>
 
 <p>ProseMirror
-is <a href="https://github.com/ProseMirror/prosemirror/blob/master/LICENSE">open
-source</a>, and you are legally free to use it commercially. Yet,
-writing, maintaining, supporting, and setting up infrastructure for
-such a project takes a lot of work and energy. Therefore...</p>
+是一个 <a href="https://github.com/ProseMirror/prosemirror/blob/master/LICENSE">开源库
+  </a>, 你可以合法的将其用于商业目的。当然，编写、维护、支持如此一个庞大的开源项目需要很大精力，因此...</p>
 
-<p class=callout>If you are using ProseMirror to make profit, there is
-a <u>social</u> expectation that you help
-fund its maintenance. &nbsp;
-<a class=fund-button href="http://marijnhaverbeke.nl/fund/">Start here.</a>
+<p class=callout>如果你正在使用 ProseMirror 赚钱，<u>我们大家</u>都希望你能够资助这个项目，以让它长远发展。 &nbsp;
+<a class=fund-button href="http://marijnhaverbeke.nl/fund/">点击这里了解更多</a>
 </p>
 
-<p>ProseMirror is being developed
-on <a href="https://github.com/prosemirror/">GitHub</a>. Contributions
-are <a href="https://github.com/ProseMirror/prosemirror/blob/master/CONTRIBUTING.md">welcome</a>.</p>
+<p>ProseMirror 被放在了
+  <a href="https://github.com/prosemirror/">GitHub</a>，欢迎
+ <a href="https://github.com/ProseMirror/prosemirror/blob/master/CONTRIBUTING.md">贡献代码</a>。</p>
 
-<p>The easiest way to install ProseMirror is
-with <a href="https://www.npmjs.com/search?q=prosemirror-">npm</a>.
-Take a look at the <a href="examples/basic/">examples</a> to get
-started.</p>
+<p>安装 ProseMirror 最容易的方式是使用
+  <a href="https://www.npmjs.com/search?q=prosemirror-">npm</a>。
+可以通过查看 <a href="examples/basic/">示例</a>来快速上手</p>
 
-<p>The library works on recent versions of Firefox, Chrome, Safari,
-and Edge, as well as on Internet Explorer 11.</p>
+<p>ProseMirror 支持最新的 Firefox、Chrome、Safari 和 Edge，当然还有 IE 11。</p>
 
-<p>Discussing the project, or asking questions, is best done on
-the <a href="https://discuss.prosemirror.net/">forum</a>.
-Bugs should be reported through
-the <a href="https://github.com/ProseMirror/prosemirror/issues">issue
-tracker</a>. We aim to be an inclusive, welcoming community. To make
-that explicit, we have
-a <a href="http://contributor-covenant.org/version/1/1/0/">code of
-conduct</a> that applies to communication around the project.</p>
+<p>关于这个项目的讨论，或者问问题，最好的地方是在
+  <a href="https://discuss.prosemirror.net/">ProseMirror 论坛</a>。
+提 Bug 的话请前往 Github 的 <a href="https://github.com/ProseMirror/prosemirror/issues">issue
+tracker</a>。我们希望营造一个包容和友善的社区。为了试这个目标更明确，我们有一个关于 ProseMirror 的
+  <a href="http://contributor-covenant.org/version/1/1/0/">社区公约</a>。</p>
 
-<h2 class=hr id=sponsors>Sponsors</h2>
+<h2 class=hr id=sponsors>赞助者</h2>
 
-<p>Initial development of the software
-was <a href="https://www.indiegogo.com/projects/prosemirror/">crowd-funded</a>
-by these 414 excellent <a href="backers.html">individuals and
-organizations</a>.</p>
+<p>软件发起者是 <a href="https://www.indiegogo.com/projects/prosemirror/">crowd-funded</a>
+以及下面这 414 个非常棒的 <a href="backers.html">独立开发者和组织</a>.</p>
 
-<p>Ongoing development is supported by these companies:</p>
+<p>下列公司一直在支持着项目的发展:</p>
 
 <div class=sponsorlist>
   <a href="https://www.rstudio.com" class="sponsor diamond"><img src="/logos/rstudio.svg" alt=RStudio></a>
