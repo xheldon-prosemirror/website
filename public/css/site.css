@@ -36,9 +36,10 @@ body {
   background: white;
   font-size: 16px;
   position: relative;
+  overflow-x: hidden;
 }
 
-article, footer nav {
+header, article, footer nav {
   max-width: 720px;
   margin: 0 auto;
 }
@@ -57,19 +58,19 @@ a { text-decoration: none }
 
 header.frontpage > h1 { z-index: 0; }
 
-header.frontpage::before {
+header.frontpage > h1:before {
   content: "";
   position: absolute;
   left: -1000px;
   right: -1000px;
-  bottom: 27%;
+  bottom: -213px;
   height: calc(100% + 850px);
   background-size: 100px 100px;
   background-image: linear-gradient(to right, #1a1a1a 2px, transparent 1px), linear-gradient(to bottom, #1a1a1a 2px, black 1px);
   background-position: left 40px bottom 60px;
   transform: rotate(-5deg);
   transform-origin: 50% 50%;
-  z-index: 0;
+  z-index: -1;
 }
 
 header > * { z-index: 2; position: relative; }
@@ -81,21 +82,12 @@ header {
 
 header.frontpage {
   color: white;
-  width: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
   margin-bottom: 40px;
 }
 
 header > h1 {
   text-align: center;
   margin: 63px 0 50px;
-}
-
-header nav, header #editor, header h1 {
-  max-width: 720px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 header nav, footer nav {
@@ -232,7 +224,6 @@ article {
 }
 
 footer {
-  margin-bottom: 54px;
   padding: 14px 6px 0;
   color: white;
   background: black;
