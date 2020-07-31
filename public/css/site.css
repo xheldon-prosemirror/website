@@ -316,6 +316,10 @@ p[type="comment"] {
   background: #eee;
 }
 
+p[type="comment"] code {
+  font-size: 12px;
+}
+
 ul.grid-list h3 {
   margin: 0 0 9px;
   line-height: 1;
