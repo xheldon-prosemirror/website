@@ -68,12 +68,12 @@ exports.buildRef = function buildRef() {
       const prevP = pArr[key - 1];
       const enContent = prevP.textContent;
       prevP.remove();
-      p.innerHTML = p.innerHTML.slice(3);
+      p.innerHTML = p.innerHTML.slice(3).trim();
       p.setAttribute('data-en', enContent);
       p.setAttribute('lang', 'cn');
     }
     if (!p.textContent.indexOf('@comment')) {
-      p.innerHTML = '注:'+ p.innerHTML.slice(8);
+      p.innerHTML = '注:'+ p.innerHTML.slice(8).trim();
       p.style.fontSize = '14px';
       p.setAttribute('type', 'comment');
     }
