@@ -18,3 +18,45 @@
 <</for>>
 
 <<foot>>
+<script>
+  // 显示汉化完成度（粗略估算），待真正完成时移除该代码
+  try {
+    var a = 0;
+    [...document.getElementsByTagName('article')[0].getElementsByTagName('p')].forEach((p) => {
+      if (/[\u4e00-\u9fa5]/g.test(p.innerText)) a = p;
+    });
+    var complete = `${((a.offsetTop / document.body.offsetHeight).toFixed(2) * 100)}%`;
+    var frag = document.createDocumentFragment();
+    var div = document.createElement('div');
+    div.style = `
+      position: fixed;
+      right: -50px;
+      top: -50px;
+      width: 40px;
+      text-align: start;
+      height: 40px;
+      display: block;
+      border-style: solid;
+      border-width: 30px;
+      border-color: transparent transparent black;
+      transform: rotate(45deg);
+      font-family: none;
+      font-size: 13px;
+    `;  
+    var a = document.createElement('a');
+    a.href = 'https://github.com/xheldon-prosemirror/prosemirror';
+    a.style = `
+      top: 48px;
+      left: -5px;
+      position: absolute;
+      color: white;
+      white-space: nowrap;
+    `;
+    a.target = '_blank';
+    a.innerText = `翻译:${complete}`;
+    div.appendChild(a);
+    frag.appendChild(div);
+    document.body.appendChild(frag);
+    
+  } catch (e) {console.log('汉化进度统计出错:', e)}
+</script>

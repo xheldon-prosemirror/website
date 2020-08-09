@@ -294,6 +294,7 @@ p { position: relative; }
 p[lang="cn"]::after {
   content: attr(data-en);
   display: block;
+  font-size: 12px;
   transition: all .2s .3s;
   visibility: hidden;
   opacity: 0;
@@ -311,13 +312,18 @@ p[lang="cn"]:hover::after {
 }
 
 p[type="comment"] {
-  border-radius: 6px;
-  padding: 6px;
+  border-radius: 4px;
+  padding: 4px;
+  font-size: 12px;
   background: #eee;
 }
 
 p[type="comment"] code {
   font-size: 12px;
+}
+
+p[type="comment"] span {
+  font-weight: 900;
 }
 
 ul.grid-list h3 {
@@ -356,7 +362,7 @@ ul.grid-list h3 {
   .toc-toggle { display: inline; cursor: pointer; }
 }
 
-dd p { margin: 0 }
+dd p { margin: 0; margin-top: 5px; }
 dd { margin-left: 20px }
 dt {
   padding-left: 35px;
