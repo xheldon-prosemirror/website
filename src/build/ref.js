@@ -73,8 +73,7 @@ exports.buildRef = function buildRef() {
       p.setAttribute('lang', 'cn');
     }
     if (!p.textContent.indexOf('@comment')) {
-      p.innerHTML = '注:'+ p.innerHTML.slice(8).trim();
-      p.style.fontSize = '14px';
+      p.innerHTML = '<span>注: </span>'+ p.innerHTML.slice(8).trim();
       p.setAttribute('type', 'comment');
     }
   });
