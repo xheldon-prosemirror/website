@@ -300,8 +300,8 @@ p[lang="cn"]::after {
   opacity: 0;
   background: #cccccc;
   z-index: 1;
-  border-radius: 8px;
-  padding: 10px;
+  border-radius: 4px;
+  padding: 5px 10px;
   position: absolute;
   top: 100%;
   left: 0;
@@ -313,7 +313,7 @@ p[lang="cn"]:hover::after {
 
 p[type="comment"] {
   border-radius: 4px;
-  padding: 4px;
+  padding: 5px 10px;
   font-size: 12px;
   background: #eee;
 }
