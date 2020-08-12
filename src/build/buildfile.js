@@ -25,6 +25,7 @@ exports.buildFile = function(file) {
     var data = JSON.parse(meta[1])
     data.content = text.slice(meta[0].length)
     data.fileName = file
+    console.log('file:', file);
     result = mold.defs[data.template](data)
   } else {
     result = mold.bake(file, text)()
