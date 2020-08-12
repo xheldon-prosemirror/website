@@ -1,40 +1,27 @@
-!{"template": "example", "title": "ProseMirror basic example"}
+!{"template": "example", "title": "ProseMirror 基本示例"}
 
-# Setting up an editor
+# 配置一个编辑器
 
-Setting up a full editor ‘from scratch’, using only the core
-libraries, requires quite a lot of code. To be able to get started
-quickly with a pre-configured editor, we provide the
-[`prosemirror-example-setup`](https://github.com/prosemirror/prosemirror-example-setup)
-package, which creates an array of plugins for you, configured to
-create a passable editing interface for a given schema. In this
-example, we use the [basic
-schema](https://github.com/prosemirror/prosemirror-schema-basic) and
-extend it with
-[lists](https://github.com/prosemirror/prosemirror-schema-list).
+只使用核心库来从零配置一个编辑器的话需要很多的代码。为了能够用一个预先配置好的编辑器快速开始，
+我们提供了 [`prosemirror-example-setup`](https://github.com/xheldon-prosemirror/prosemirror-example-setup) 包，
+它已经为你创建好了一系列的插件、基础设置，以及一个可配置的 schema。在这个示例中，我们使用 [basic schema](https://github.com/xheldon-prosemirror/prosemirror-schema-basic)
+以及使用 [lists](https://github.com/xheldon-prosemirror/prosemirror-schema-list) 来扩展该 schema。
 
 PART(code)
 
-And this is what it looks like:
+上面代码的运行效果是这个样子：
 
 @HTML
 
 [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/remix/prosemirror-demo-basic)
 
-These plugins are created by the example setup:
+下面这些插件由上述的 example-setup 库所创建：
 
- * [Input rules](##inputrules), which are input macros that fire when
-   certain patterns are typed. In this case, it is set up to provide
-   things like smart quotes and some Markdown-like behavior, such as
-   starting a blockquote when you type “> ”.
- * [Keymaps](##keymap) with the [base bindings](##commands.baseKeymap)
-   and custom bindings for common mark and node types, such as mod-i
-   to enable emphasis and ctrl-shift-1 to make the current textblock a
-   heading.
- * The [drop
-   cursor](https://github.com/prosemirror/prosemirror-dropcursor) and
-   [gap cursor](##gapcursor) plugins.
- * The [undo history](##history).
- * A [menu bar](https://github.com/prosemirror/prosemirror-menu)
-   (which is another module that is meant more for demos than for
-   production), with menu items for common tasks and schema elements.
+ * [Input rules](##inputrules)，它是一个 `宏`，以当有匹配到的输入的时候执行。在这个示例中，
+   它提供了类似智能引号（自动配对引号）以及一些类 markdown 的编辑行为，比如如果想新建输入一个 blockquote 可以输入 「>」。
+ * [Keymaps](##keymap) 加上 [base bindings](##commands.baseKeymap) 和自定义的键盘绑定以生成常用的样式和节点，
+   如 mod+i 可以设置斜体，ctrl—shift—1 则将当前文本块转换成一级标题。
+ * [drop cursor](https://github.com/xheldon-prosemirror/prosemirror-dropcursor) 和 [gap cursor](##gapcursor) 插件。
+ * [撤销历史](##history)
+ * 一个 [菜单栏](https://github.com/xheldon-prosemirror/prosemirror-menu) （该模块更多的是 demo 性质而不是在生产环境使用），有一些
+   常用的菜单操作。
