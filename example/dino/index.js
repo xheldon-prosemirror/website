@@ -1,25 +1,23 @@
 // nodespec{
-// The supported types of dinosaurs.
+// 支持的恐龙类型
 const dinos = ["brontosaurus", "stegosaurus", "triceratops",
                "tyrannosaurus", "pterodactyl"]
 
 const dinoNodeSpec = {
-  // Dinosaurs have one attribute, their type, which must be one of
-  // the types defined above.
-  // Brontosaurs are still the default dino.
+  // 恐龙只有一个属性，那就是它的类型，而且必须是上面的类型之一
+  // Brontosaurs 是默认的类型
   attrs: {type: {default: "brontosaurus"}},
   inline: true,
   group: "inline",
   draggable: true,
 
-  // These nodes are rendered as images with a `dino-type` attribute.
-  // There are pictures for all dino types under /img/dino/.
+  // 这些节点以一个带有 `dino-type` 属性的 images 节点进行渲染
+  // 在 /img/dino/ 目录下有所有的恐龙图片
   toDOM: node => ["img", {"dino-type": node.attrs.type,
                           src: "/img/dino/" + node.attrs.type + ".png",
                           title: node.attrs.type,
                           class: "dinosaur"}],
-  // When parsing, such an image, if its type matches one of the known
-  // types, is converted to a dino node.
+  // 当格式化一个 image DOM 的时候，如果它的 type 属性是上面所述的恐龙类型之一，那么它就会被转换成一个 dino 节点
   parseDOM: [{
     tag: "img[dino-type]",
     getAttrs: dom => {
@@ -62,9 +60,9 @@ function insertDino(type) {
 import {MenuItem} from "prosemirror-menu"
 import {buildMenuItems} from "prosemirror-example-setup"
 
-// Ask example-setup to build its basic menu
+// 让 example-setup 去 build 它的基本菜单
 let menu = buildMenuItems(dinoSchema)
-// Add a dino-inserting item for each type of dino
+// 增加一个插入恐龙节点的按钮
 dinos.forEach(name => menu.insertMenu.content.push(new MenuItem({
   title: "Insert " + name,
   label: name.charAt(0).toUpperCase() + name.slice(1),
@@ -81,7 +79,7 @@ import {exampleSetup} from "prosemirror-example-setup"
 window.view = new EditorView(document.querySelector("#editor"), {
   state: EditorState.create({
     doc: startDoc,
-    // Pass exampleSetup our schema and the menu we created
+    // 传给 exampleSetup 和 我们创建的 menu
     plugins: exampleSetup({schema: dinoSchema, menuContent: menu.fullMenu})
   })
 })
