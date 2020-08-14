@@ -18,25 +18,24 @@ class SelectionSizeTooltip {
 
   update(view, lastState) {
     let state = view.state
-    // Don't do anything if the document/selection didn't change
+    // 如果文档或者选区未发生更改，则什么不做
     if (lastState && lastState.doc.eq(state.doc) &&
         lastState.selection.eq(state.selection)) return
 
-    // Hide the tooltip if the selection is empty
+    // 如果选区为空（光标状态）则隐藏 tooltip
     if (state.selection.empty) {
       this.tooltip.style.display = "none"
       return
     }
 
-    // Otherwise, reposition it and update its content
+    // 否则，重新设置它的位置并且更新它的内容
     this.tooltip.style.display = ""
     let {from, to} = state.selection
-    // These are in screen coordinates
+    // 这些是在屏幕上的坐标信息
     let start = view.coordsAtPos(from), end = view.coordsAtPos(to)
-    // The box in which the tooltip is positioned, to use as base
+    // 将 tooltip 所在的父级节点作为参照系
     let box = this.tooltip.offsetParent.getBoundingClientRect()
-    // Find a center-ish x position from the selection endpoints (when
-    // crossing lines, end may be more to the left)
+    // 寻找 tooltip 的中点，当跨行的时候，端点可能更靠近左侧
     let left = Math.max((start.left + end.left) / 2, start.left + 3)
     this.tooltip.style.left = (left - box.left) + "px"
     this.tooltip.style.bottom = (box.bottom - start.top) + "px"
