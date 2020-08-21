@@ -13,8 +13,7 @@ let options = {
     require("rollup-plugin-node-resolve")({main: true, preferBuiltins: false}),
     require("rollup-plugin-json")(),
     require("rollup-plugin-commonjs")(),
-    require("rollup-plugin-buble")(),
-    require("rollup-plugin-node-builtins")()
+    require("rollup-plugin-buble")()
   ],
   external,
   output: {format: "iife", globals}
