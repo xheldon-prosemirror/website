@@ -10,17 +10,18 @@ let globals = {}, external = []
 let options = {
   input: process.argv[2],
   plugins: [
-    require("rollup-plugin-node-resolve")({main: true, preferBuiltins: false}),
-    require("rollup-plugin-json")(),
-    require("rollup-plugin-commonjs")(),
-    require("rollup-plugin-buble")(),
-    require("rollup-plugin-node-builtins")()
+    require("@rollup/plugin-node-resolve").nodeResolve({main: true, preferBuiltins: false}),
+    require("@rollup/plugin-json")(),
+    require("@rollup/plugin-commonjs")(),
+    require("@rollup/plugin-buble")()
   ],
   external,
   output: {format: "iife", globals}
 }
 
-rollup(options).then(bundle => bundle.generate(options)).then(
-  output => console.log(output.code),
+rollup(options).then(bundle => bundle.generate(options.output)).then(
+  bundle => {
+    for (let file of bundle.output) if (file.fileName == "index.js") console.log(file.code)
+  },
   error => { console.error(error.stack || error.message); process.exit(1) }
 )
