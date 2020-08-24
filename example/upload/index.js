@@ -6,9 +6,9 @@ let placeholderPlugin = new Plugin({
   state: {
     init() { return DecorationSet.empty },
     apply(tr, set) {
-      // Adjust decoration positions to changes made by the transaction
+      // 调整因为 decoration 的位置，以适应 transaction 引起的文档的改变
       set = set.map(tr.mapping, tr.doc)
-      // See if the transaction adds or removes any placeholders
+      // 查看 transaction 是否增加或者删除任何占位符了
       let action = tr.getMeta(this)
       if (action && action.add) {
         let widget = document.createElement("placeholder")
@@ -46,10 +46,10 @@ document.querySelector("#image-upload").addEventListener("change", e => {
 
 // startImageUpload{
 function startImageUpload(view, file) {
-  // A fresh object to act as the ID for this upload
+  // 为 upload 构建一个空的对象来存放占位符们的 ID
   let id = {}
 
-  // Replace the selection with a placeholder
+  // 用占位符替换选区
   let tr = view.state.tr
   if (!tr.selection.empty) tr.deleteSelection()
   tr.setMeta(placeholderPlugin, {add: {id, pos: tr.selection.from}})
@@ -57,24 +57,21 @@ function startImageUpload(view, file) {
 
   uploadFile(file).then(url => {
     let pos = findPlaceholder(view.state, id)
-    // If the content around the placeholder has been deleted, drop
-    // the image
+    // 如果占位符周围的内容都被删除了，那就删除这个占位符所代表的图片
     if (pos == null) return
-    // Otherwise, insert it at the placeholder's position, and remove
-    // the placeholder
+    // 否则的话，将图片插入占位符所在的位置，然后移除占位符
     view.dispatch(view.state.tr
                   .replaceWith(pos, pos, schema.nodes.image.create({src: url}))
                   .setMeta(placeholderPlugin, {remove: {id}}))
   }, () => {
-    // On failure, just clean up the placeholder
+    // 如果上传失败，简单移除占位符就好
     view.dispatch(tr.setMeta(placeholderPlugin, {remove: {id}}))
   })
 }
 // }
 
-// This is just a dummy that loads the file and creates a data URL.
-// You could swap it out with a function that does an actual upload
-// and returns a regular URL for the uploaded file.
+// 下面这个函数只是假装上传了一个文件然后新建了一个 data URL，
+// 你可以用一个能够真实上传然后获取真实文件 URL 的函数来替换该函数。
 function uploadFile(file) {
   let reader = new FileReader
   return new Promise((accept, fail) => {
