@@ -1,59 +1,37 @@
 !{"template": "example", "title": "ProseMirror upload example"}
 
-# Upload handling
+# 处理上传
 
-Some types of editing involve asynchronous operations, but you want to
-present them to your users as a single action. For example, when
-inserting an image from the user's local filesystem, you won't have
-access to the actual image until you've uploaded it and created a URL
-for it. Yet, you don't want to make the user go through the motion of
-first uploading the image, then waiting for that to complete, and only
-then inserting the image into the document.
+一些编辑涉及到异步的操作，但是你想要将它们作为单个动作呈现为给用户，例如，当用户从本地插入图片，你只能在
+用户上传到服务端完成并拿到了 URL 后才能访问实际的图片。但是你不想让用户经历先上传图片，然后等待上传图片后再将图片插入的漫长过程。
 
-Ideally, when the image is selected, you start the upload but also
-immediately insert a placeholder into the document. Then, when the
-upload finishes, that placeholder is replaced with the final image.
+理想情况下，选择图片后，你应该立即在文档中插入一个占位符以开始上传。然后，当上传完成后将占位符替换为最终图片。
 
 @HTML
 
 [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/remix/prosemirror-demo-upload)
 
-Since the upload might take a moment, and the user might make more
-changes while waiting for it, the placeholder should move along with
-its context as the document is edited, and when the the final image is
-inserted, it should be put where the placeholder has ended up by that
-time.
+由于上传可能需要一点时间，因此用户可能在等待的时候对文档做出其他更改，所以这个占位符应该随着上下文的更改进行移动，当最终的图片插入成功后，它应该替换掉此时占位符的位置。
 
-The easiest way to do this is to make the placeholder a
-[decoration](/docs/guide/#view.decorations), so that it only exists in
-the user's interface. Let's start by writing a plugin that manages
-such decorations.
+实现这个方案最简单的方式是将占位符作为一个 [decoration](/docs/guide/#view.decorations) ，这样的话它就仅存在于用户的 UI 界面。让我们从写一个管理这个 decoration 的 plugin 开始： 
 
 PART(placeholderPlugin)
 
-This is a thin wrapper around a [decoration
-set](##view.DecorationSet)—it has to be a _set_ because multiple
-uploads can be in progress at the same time. The meta property for the
-plugin can be used to add and remove widget decorations by ID.
+这是一个 [decoration set](##view.DecorationSet) 的简单包裹--它必须是一个 _集合_ ，因为多个上传可能同时发生。
+plugin 的 meta 信息可以被用来通过 ID 增加或者删除 widget decoration。
 
-The plugin comes with a function that returns the current position of
-the placeholder with the given ID, if it still exists.
+该 plugin 有个通过给定 ID 返回占位符当前位置的函数（如果该占位符仍然存在的话）：
 
 PART(findPlaceholder)
 
-When the file input below the editor is used, this event handler
-checks some conditions, and fires off the upload when possible.
+当编辑器下方的选择文件按钮被点击之后，事件处理函数会检查一些条件，然后在一些情况下触发上传：
 
 PART(event)
 
-The core functionality happens in `startImageUpload`. The utility
-`uploadFile`, which returns a promise that resolves to the uploaded
-file's URL (in the demo it actually just waits for a bit and then
-returns a `data:` URL).
+核心的功能发生在 `startImageUpload` 函数中。工具函数 `uploadFile` 会返回一个 promise，它最终会 resolve 文件的 URL
+（在这个 Demo 中，它实际上只是等待了一会儿然后返回了一个 `data:` URL)：
 
 PART(startImageUpload)
 
-Because the placeholder plugin [maps](##view.DecorationSet.map) its
-decorations through transactions, `findPlaceholder` will get the
-accurate position of the image, even if the document was modified
-during the upload.
+因为 placeholder plugin 通过一个 transaction [maps(映射)](##view.DecorationSet.map) 它的 decorations，因此，
+即使文档在文件上传期间被修改过，`findPlaceholder` 也会得到图片的正确位置。
