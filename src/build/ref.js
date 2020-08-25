@@ -39,9 +39,9 @@ var modules = [{
   deps: ["state"]
 }]
 
-var baseDir = __dirname + "/../../node_modules/"
-if (!fs.existsSync(baseDir + "prosemirror-model"))
-  baseDir = __dirname + "/../../../node_modules/"
+var baseDir = __dirname + "/../../../node_modules/"
+/*if (!fs.existsSync(baseDir + "prosemirror-model"))
+  baseDir = __dirname + "/../../../node_modules/"*/
 
 let read = Object.create(null)
 modules.forEach(config => {
