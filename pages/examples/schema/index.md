@@ -1,24 +1,18 @@
 !{"template": "example", "title": "ProseMirror schema example"}
 
-# Schemas from scratch
+# 从零开始写一个 Schema
 
-ProseMirror [schemas](/docs/guide/#schema) provide something like a
-syntax for documents—they set down which structures are valid.
+ProseMirror 的 [schemas](/docs/guide/#schema) 为文档提供了类似语法一样的东西--他们决定哪些文档结构是有效可用的。
 
-The most simple schema possible allows the document to be composed
-just of text.
+最简单的 schema 可能仅仅是一个有文本节点组成的文档：
 
 PART(textSchema)
 
-You can use it to edit inline content. <span id="text-editor"></span>
-(A ProseMirror view can be [mounted](##view.EditorView.constructor) on
-any node, including inline nodes.)
+你可以使用它来编辑行内元素。<span id="text-editor"></span> (ProseMirror 的 view 可以 [mounted(挂载)](##view.EditorView.constructor) 在任何节点，包括行内节点)
 
-## Blocks
+## 块级节点
 
-To add more structure, you'll usually want to add some kind of block
-nodes. For example, this schema consists of notes that can
-optionally be grouped with group nodes.
+为了添加更多文档结构，你通常想要添加一些块级节点。比如，下面这个 schema 包含一些备忘信息节点，它可以（可选的）与其他备忘信息组成一个备忘信息组节点，以分组显示：
 
 PART(noteSchema)
 
