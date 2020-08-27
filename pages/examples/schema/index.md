@@ -16,55 +16,38 @@ PART(textSchema)
 
 PART(noteSchema)
 
-For nodes that aren't text or top-level nodes, it is
-[necessary](/docs/guide/#schema.serialization_and_parsing) to provide
-[`toDOM`](##model.NodeSpec.toDOM) methods, so that the editor can
-render them, and [`parseDOM`](##model.NodeSpec.parseDOM) values, so
-that they can be parsed. This schema uses custom DOM nodes `<note>`
-and `<notegroup>` to represent its nodes.
+对于不是 text 或者顶级节点的节点来说，提供一个 [`toDOM`](##model.NodeSpec.toDOM) 方法是[必要的](/docs/guide/#schema.serialization_and_parsing)，
+这样一来，编辑器可以渲染这些节点；以及提供一个 [`parseDOM`](##model.NodeSpec.parseDOM) 方法，这样 DOM 节点可以被 parse 成 ProseMirror 的 node。
+下面的 schema 使用自定义的 `<note>` 和 `<notegroup>` 这两个 DOM 元素来代表 ProseMirror 中对应的节点：
 
 @HTML:note
 
-You can press ctrl-space to add a group around the
-selected notes. To get that functionality, you first have to implement
-a custom [editing command](/docs/guide/#commands). Something like
-this:
+你可以选中几个 notes 后按 ctrl-space 来将他们成组。要实现这个效果，你首先应该实现一个自定义的 [编辑命令](/docs/guide/#commands)，就像下面这样：
 
 PART(makeNoteGroup)
 
-A [keymap](##keymap) like `keymap({"Ctrl-Space": makeNoteGroup})` can
-be used to enable it.
+一个像 `keymap({"Ctrl-Space": makeNoteGroup})` 一样的 [keymap](##keymap) 可以启用该命令。
 
-The [generic bindings](##commands.baseKeymap) for enter and backspace
-work just fine in this schema—enter will split the textblock around
-the cursor, or if that's empty, try to lift it out of its parent node,
-and thus can be used to create new notes and escape from a note group.
-Backspace at the start of a textblock will lift that textblock out of
-its parent, which can be used to remove notes from a group.
+对于 enter 和 backspace 按键的 [通用按键绑定](##commands.baseKeymap) 在这个 schema 中可以正常运行--
+enter 将会分隔在光标两侧的文本 block，或者如果光标所在的位置为空文本 block，则会试着将其脱离其父级节点，
+因此可以用来从当前 notes group 中退出，然后创建一个新的 notes。在一个文本 block 的开头按 backspace 会将文本 block 脱离其父级节点，
+这样也可以用来将一个 note 中 note group 中移除。
 
-## Groups and marks
+## Groups and marks（节点组和 marks）
 
-Let's do one more, with stars and shouting.
+让我们再做一次，伴随着 start 和 shouting（不知道啥意思）。
 
-This schema has not just text as inline content, but also _stars_,
-which are just inline nodes. To be able to easily refer to both our
-inline nodes, they are tagged as a group (also called `"inline"`). The
-schema does the same for the two types of block nodes, one paragraph
-type that allows any inline content, and one that only allows unmarked
-text.
+下面这个 schema 不仅有文本作为 inline 节点，_start_ 也是 inline 的节点。
+为了能够容易的引用我们的这两个 inline 节点，他们可以被归为一组（仍然叫做 `「inline」`）。
+这个 schema 将遇到的两种 block 节点一视同仁，一个是 `paragraph` 类型，它允许任何 inline 内容，
+另一种是 `boring_paragraph` 类型，它只允许没有 mark 设置的文本内容：
 
 PART(starSchema_1)
 
-Since textblocks allow marks by default, the `boring_paragraph` type
-sets [`marks`](##model.NodeSpec.marks) to the empty string to
-explicitly forbid them.
+因为文本 block 类型的节点默认情况下允许 marks，因此 `boring_paragraph` 节点将 [`marks`](##model.NodeSpec.marks) 设置为空字符串，以明确禁止它。
 
-The schema defines two types of marks, shouted text and links. The
-first is like the common strong or emphasis marks, in that it just
-adds a single bit of information to the content it marks, and doesn't
-have any attributes. It specifies that it should be rendered as a
-`<shouting>` tag (which is styled to be inline, bold, and uppercase),
-and that that same tag should be parsed as this mark.
+下面这个 schema 定义了两种类型的 marks，`shouted text` 和 `links`。前者类似于普通的加粗 marks，它只所在的内容上添加一点信息，而没有任何 attributes。
+它在 DOM 中被渲染成 `<shouting>` 标签（样式被设置为内联、加粗和大写），同时有该名字的 DOM 标签应该被 parse 成这个 mark：
 
 PART(starSchema_2)
 
