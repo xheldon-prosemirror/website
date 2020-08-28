@@ -1,4 +1,4 @@
-!{"template": "example", "title": "ProseMirror upload example"}
+!{"template": "example", "title": "ProseMirror 图片上传示例"}
 
 # 处理上传
 

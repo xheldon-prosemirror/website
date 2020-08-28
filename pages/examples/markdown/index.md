@@ -1,4 +1,4 @@
-!{"template": "example", "title": "ProseMirror markdown example"}
+!{"template": "example", "title": "ProseMirror markdown 示例"}
 
 # 友好的 markdown
 

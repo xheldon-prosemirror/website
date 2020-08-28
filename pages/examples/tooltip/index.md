@@ -1,4 +1,4 @@
-!{"template": "example", "title": "ProseMirror tooltip example"}
+!{"template": "example", "title": "ProseMirror 提示文本示例"}
 
 # Tooltips
 

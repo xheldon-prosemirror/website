@@ -1,4 +1,4 @@
-!{"template": "example", "title": "ProseMirror embedded editor example"}
+!{"template": "example", "title": "ProseMirror 内嵌编辑器示例"}
 
 <link rel=stylesheet href="../../css/codemirror.css">
 
