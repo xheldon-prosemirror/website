@@ -48,7 +48,7 @@ function menuPlugin(items) {
 import {toggleMark, setBlockType, wrapIn} from "prosemirror-commands"
 import {schema} from "prosemirror-schema-basic"
 
-// Helper function to create menu icons
+// 创建菜单图标的辅助函数
 function icon(text, name) {
   let span = document.createElement("span")
   span.className = "menuicon " + name
@@ -57,7 +57,7 @@ function icon(text, name) {
   return span
 }
 
-// Create an icon for a heading at the given level
+// 创建一个给定级别的标题图标
 function heading(level) {
   return {
     command: setBlockType(schema.nodes.heading, {level}),
