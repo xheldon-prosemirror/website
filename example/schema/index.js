@@ -34,14 +34,13 @@ const noteSchema = new Schema({
 import {findWrapping} from "prosemirror-transform"
 
 function makeNoteGroup(state, dispatch) {
-  // Get a range around the selected blocks
+  // 获取选择的节点的 ranges
   let range = state.selection.$from.blockRange(state.selection.$to)
-  // See if it is possible to wrap that range in a note group
+  // 查看是否允许用 note group 包裹这个 ranges
   let wrapping = findWrapping(range, noteSchema.nodes.notegroup)
-  // If not, the command doesn't apply
+  // 如果不允许的话，命令不会执行
   if (!wrapping) return false
-  // Otherwise, dispatch a transaction, using the `wrap` method to
-  // create the step that does the actual wrapping.
+  // 否则，dispatch 一个 transaction，使用 `wrap` 方法开创建一个实现实际的包裹行为的 step
   if (dispatch) dispatch(state.tr.wrap(range, wrapping).scrollIntoView())
   return true
 }
