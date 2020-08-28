@@ -1,18 +1,13 @@
 <div id="editor"></div>
 
 <div id=content style="display: none">
-<h3>The code block is a code editor</h3>
-<p>This editor has been wired up to render code blocks as instances of
-the <a href="http://codemirror.net">CodeMirror</a> code editor, which
-provides syntax highlighting, auto-indentation, and similar.</p>
+<h3>这个代码块是一个代码编辑器</h3>
+<p>当前编辑器封装了将代码块渲染为代码编辑器 <a href="http://codemirror.net">CodeMirror</a> 的实例，CodeMirror 提供了语法高亮，自动缩进等功能。</p>
 <pre>
 function max(a, b) {
   return a > b ? a : b
 }</pre>
-<p>The content of the code editor is kept in sync with the content of
-the code block in the rich text editor, so that it is as if you're
-directly editing the outer document, using a more convenient
-interface.</p>
+<p>代码编辑器的内容与在富文本编辑器中代码块节点的内容保持同步，这样一来你编辑代码就好像直接在编辑外部的富文本编辑器的内容一样</p>
 </div>
 
 <style>

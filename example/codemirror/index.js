@@ -22,25 +22,22 @@ class CodeBlockView {
     this.getPos = getPos
     this.incomingChanges = false
 
-    // Create a CodeMirror instance
+    // 新建一个 CodeMirror 实例
     this.cm = new CodeMirror(null, {
       value: this.node.textContent,
       lineNumbers: true,
       extraKeys: this.codeMirrorKeymap()
     })
 
-    // The editor's outer node is our DOM representation
+    // 代码编辑器的最外层节点是就是我们代码块的的 DOM 节点
     this.dom = this.cm.getWrapperElement()
-    // CodeMirror needs to be in the DOM to properly initialize, so
-    // schedule it to update itself
+    // CodeMirror 需要在 DOM 中被合适的初始化，因此设置个定时器让它更新自身
     setTimeout(() => this.cm.refresh(), 20)
-
-    // This flag is used to avoid an update loop between the outer and
-    // inner editor
+    // 这个标记用来避免在外部编辑器和内部编辑器之间的循环更新
     this.updating = false
-    // Track whether changes are have been made but not yet propagated
+    // 追踪是否改变已经发生，但是还没有传递出去
     this.cm.on("beforeChange", () => this.incomingChanges = true)
-    // Propagate updates from the code editor to ProseMirror
+    // 将代码编辑器的更新传递给外层的 ProseMirror
     this.cm.on("cursorActivity", () => {
       if (!this.updating && !this.incomingChanges) this.forwardSelection()
     })
