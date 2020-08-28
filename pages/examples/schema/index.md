@@ -51,45 +51,33 @@ PART(starSchema_1)
 
 PART(starSchema_2)
 
-Links do have an attribute—their target URL, so their DOM serializing
-method has to output that (the second element in an array returned
-from `toDOM`, if it's a plain object, provides a set of DOM
-attributes), and their DOM parser has to read it.
+Links 则确实有一个 attributes--它们的 url，因此它们的 DOM 序列化的方法需要输出这个 attributes
+（从 `toDOM` 函数返回的数组中的第二个元素如果是一个普通对象的话，会提供一个 DOM attributes 集合），同时它们的 DOM parser 需要读取这个 attributes。
 
-By default, marks are _inclusive_, meaning that they get applied to
-content inserted at their end (as well as at their start when they
-start at the start of their parent node). For link-type marks, this is
-usually not the expected behavior, and the
-[`inclusive`](##model.MarkSpec.inclusive) property on the mark spec
-can be set to false to disable that behavior.
+默认情况下，marks 需要 _inclusice_ 属性，它表示该 mark 会应用到直接插入在它们后面的内容（如果这些 marks 位于它们父级节点的开始位置的话，也一样会应用）。
+对于 link 类型的 marks，这通常不是预期的行为，因此设置到此类 marks 上的 [`inclusive`](##model.MarkSpec.inclusive) 属性可以被设置为 false 以禁止此行为。
+
+译者注：假设有 mark b： `<b>abc</b>`，然后输入 `d`。如果其 `inclusive` 属性是 true，则光标放到 `c` 后面的时候输入的内容也被当成是 b mark 的一部分，即变成了 `<b>abcd</>`；
+同理，如果 b 是其父节点的第一个 mark 的话，如 `<p><b>abc</b></p>`，则得到 `<p><b>dabc</b></p>`。
+如果 b 的 mark 是 `inclusive` 是 false，则光标放到 `c` 后面输入内容 `d`，则会得到结果 `<b>abc</b>d`，
+同理，若是其父节点的第一个 mark 的话， 则得到：`<p>d<b>abc</b></p>`：
 
 @HTML:star
 
 [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/remix/prosemirror-demo-schema)
 
-To make it possible to interact with these elements we again have to
-add a custom keymap. There's a command helper for toggling marks,
-which we can use directly for the shouting mark.
+为了能与这些元素进行交互，我们再一次的需要一个自定义的 keymap。对于打开/关闭 marks，有一个直接使用的命令辅助函数，这样我们就可以直接对 shouting mark 使用这个辅助函数了：
 
 PART(starKeymap)
 
-Toggling a link is a little more involved. En- or disabling
-non-inclusive marks when nothing is selected isn't meaningful, since
-you can't “type into’ them like you can with inclusive marks. And we
-need to ask the user for a URL—but only if a link is being added. So
-the command uses [`rangeHasMark`](##model.Node.rangeHasMark) to check
-whether it will be adding or removing, before prompting for a URL.
+打开/关闭一个 link 实际上是有点复杂的。当什么也没选中的时候，启用或者禁用一个 inclusive 为 false 的 marks 没有任何意义，因为你不能将内容「输入进」这种 marks（就像 inclusive 为 true 做的那样）。
+此外我们还需要让用户输入一个 URL--但是前提是得先添加一个 link。因此打开/关闭 links 的命令会在请求用户输入 URL 之前使用 [`rangeHasMark`](##model.Node.rangeHasMark) 去检查 link mark 是否将要被添加或者移除。
 
-(`prompt` is probably not what you'd want to use in a real system.
-When using an asynchronous method to query the user for something,
-make sure to use the _current_ state, not the state when the command
-was originally called, when applying the command's effect.)
+（`请求用户` 这种交互逻辑可能在真实的系统是并不是你想要的。当使用一个异步的方法让用户输入一些信息然后应用的时候，你需要确保该时刻使用的是 _当前最新的_ state，而不是当命令被调用时刻的 state。）
 
 PART(toggleLink)
 
-The command that inserts a star first checks whether the schema allows
-one to be inserted at the cursor position (using
-[`canReplaceWith`](##model.Node.canReplaceWith)), and if so, replaces
-the selection with a newly created star node.
+插入一个 star 的命令首先检查 schema 是否允许一个 star 插入光标所在的位置（使用 [`canReplaceWith`](##model.Node.canReplaceWith) 方法），如果允许的话，
+则用新创建的 star 节点替换选区：
 
 PART(insertStar)
