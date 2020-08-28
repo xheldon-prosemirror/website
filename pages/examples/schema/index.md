@@ -1,4 +1,4 @@
-!{"template": "example", "title": "ProseMirror schema example"}
+!{"template": "example", "title": "ProseMirror schema 示例"}
 
 # 从零开始写一个 Schema
 

@@ -1,4 +1,4 @@
-!{"template": "example", "title": "ProseMirror dino example"}
+!{"template": "example", "title": "ProseMirror 恐龙示例"}
 
 # 文档中的恐龙
 

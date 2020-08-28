@@ -1,4 +1,4 @@
-!{"template": "example", "title": "ProseMirror menu example"}
+!{"template": "example", "title": "ProseMirror 菜单示例"}
 
 # 添加一个操作菜单
 
