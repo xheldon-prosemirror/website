@@ -1,80 +1,56 @@
-!{"template": "example", "title": "ProseMirror footnote example"}
+!{"template": "example", "title": "ProseMirror 脚注示例"}
 
-# Editing footnotes
+# 编辑脚注
 
-This example demonstrates one way to implement something like
-footnotes in ProseMirror.
+这个示例演示了如何在 ProseMirror 中实现类似脚注一样的东西：
 
 @HTML
 
 [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/remix/prosemirror-demo-footnote)
 
-Footnotes seem like they should be inline nodes with content—they
-appear in between other inline content, but their content isn't really
-part of the textblock around them. Let's define them like this:
+脚注看起来应该被实现为一种带有内容的内联节点--他们出现在其他内联内容之间，但是它的内容并不是它外层文本 block 的内容。
+因此让我们先像下面一样定义它们：
 
 PART(schema)
 
-Inline nodes with content are not handled well by the library, at
-least not by default. You are required to write a [node
-view](/docs/guide/#view.node_views) for them, which somehow manages
-the way they appear in the editor.
+对于有内容的内联节点，ProseMirror 处理的并不太好，至少默认并不支持这种类型。
+所以你需要为这种类型的节点写一个 [node view](/docs/guide/#view.node_views)，
+它可以以某种方式管理这种带内容的内联节点出现在编辑器中的方式。
 
-So that's what we'll do. Footnotes in this example are drawn as
-numbers. In fact, they are just `<footnote>` nodes, and we'll rely on
-CSS to add the numbers.
+因此这就是我们将要做的事情。本示例中的脚注以一个数字的形式显示在文档中。而事实上，
+他们仅仅是 `<footnote>` 节点，我们需要依赖 CSS 来将数字添加上去：
 
 PART(nodeview_start)
 
-Only when the node view is selected does the user get to see and
-interact with its content (it'll be selected when the user ‘arrows’
-onto it, because we set the [`atom`](##model.NodeSpec.atom) property
-on the node spec). These two methods handle node selection and
-deselection the node view.
+只有当 node view 被选中的时候，用户才可以与它的内容做交互（它将在用户的光标放到上去的时候或者鼠标点击的时候才会被选中，
+因为我们对这种类型的节点设置了 [`atom`](##model.NodeSpec.atom) 属性)。下面这两种方法处理 node view 被选中和取消选中时候的逻辑：
 
 PART(nodeview_select)
 
-What we'll do is pop up a little sub-editor, which is itself a
-ProseMirror view, with the node's content. Transactions in this
-sub-editor are handled specially, in the `dispatchInner` method.
+当选中的时候，我们需要做的是弹出一个小的子编辑器，它本身是一个 ProseMirror view，内容是节点的内容。在子编辑器中的 Transaction 被特殊的由父编辑器的 `dispatchInner` 方法处理。
 
-Mod-z and y are bound to run undo and redo on the _outer_ editor.
-We'll see in a moment why that works.
+Mod-z 和 y 按键被绑定到 _父编辑器_ 的 undo 和 redo 功能上。我们一会儿再来看它是如何做到的：
 
 PART(nodeview_open)
 
-What should happen when the content of the sub-editor changes? We
-could just take its content and reset the content of the footnote in
-the outer document to it, but that wouldn't play well with the undo
-history or collaborative editing.
+当子编辑器的内容改变的时候应该如何处理？我们可以仅仅是拿到内容，然后将在外部编辑器的脚注的内容给重置为该内容，但是这对于 undo 历史和协同编辑来说并不可行。
 
-A nicer approach is to simply apply the steps from the inner editor,
-with an appropriate offset, to the outer document.
+一个更好的实现是简单的将自于子编辑器的 setps，加上合适的偏移位置，应用到外部文档中去。
 
-We have to be careful to handle [appended
-transactions](##state.PluginSpec.appendTransaction), and to be able to
-handle updates from the outside editor without creating an infinite
-loop, the code also understands the transaction flag `"fromOutside"`
-and disables propagation when it's present.
+我们需要小心的处理 [appended transactions](##state.PluginSpec.appendTransaction)，同时需要能够处理来自外部编辑器的更新而不造成一个无限循环，
+下面代码也同样理解 transaction 的 `「fromOutside」` 的含义，会在它出现的时候不让其向外传播（冒泡）：
 
 PART(nodeview_dispatchInner)
 
-To be able to cleanly handle updates from outside (for example through
-collaborative editing, or when the user undoes something, which is
-handled by the outer editor), the node view's
-[`update`](##view.NodeView.update) method carefully finds the
-difference between its current content and the content of the new
-node. It only replaces the changed part, in order to leave the cursor
-in place whenever possible.
+为了能够干净的处理来自外部编辑器的更新（比如协同编辑或者由外部编辑器处理的用户 undo 的一些操作的时候），node view 的 [`update`](##view.NodeView.update)
+方法将会仔细的查看当前内容和节点内容的不同。它只替换掉发生变化的部分，尽可能的保证光标在原地不动：
 
 PART(nodeview_update)
 
-Finally, the nodeview has to handle destruction and queries about
-which events and mutations should be handled by the outer editor.
+最后，nodevidw 需要处理销毁事件，以及告诉外部编辑器应该处理哪些来自于 node view 的事件和变化：
 
 PART(nodeview_end)
 
-We can enable our schema and node view like this, to create an actual
-editor.
+我们可以像下面这样启用 schema 和 node view，以创建一个真实编辑器：
 
 PART(editor)

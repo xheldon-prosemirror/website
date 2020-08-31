@@ -6,8 +6,7 @@ const footnoteSpec = {
   group: "inline",
   content: "inline*",
   inline: true,
-  // This makes the view treat the node as a leaf, even though it
-  // technically has content
+  // 这个设置让 view 将该节点当成是一个叶子节点对待，即使它从技术上讲，是有内容的
   atom: true,
   toDOM: () => ["footnote", 0],
   parseDOM: [{tag: "footnote"}]
@@ -48,14 +47,14 @@ import {undo, redo} from "prosemirror-history"
 
 class FootnoteView {
   constructor(node, view, getPos) {
-    // We'll need these later
+    // 我们后面需要这些
     this.node = node
     this.outerView = view
     this.getPos = getPos
 
-    // The node's representation in the editor (empty, for now)
+    // 这个是该节点在编辑器中的 DOM 结构（目前为止是空的）
     this.dom = document.createElement("footnote")
-    // These are used when the footnote is selected
+    // 这个是当脚注被选中的时候有用
     this.innerView = null
   }
 // }
@@ -72,12 +71,12 @@ class FootnoteView {
 // }
 // nodeview_open{
   open() {
-    // Append a tooltip to the outer node
+    // 附加一个 tooltip 到外部节点
     let tooltip = this.dom.appendChild(document.createElement("div"))
     tooltip.className = "footnote-tooltip"
-    // And put a sub-ProseMirror into that
+    // 然后在其内添加一个子 ProseMirror 编辑器
     this.innerView = new EditorView(tooltip, {
-      // You can use any node as an editor document
+      // 你可以用任何节点作为这个子编辑器的 doc 节点
       state: EditorState.create({
         doc: this.node,
         plugins: [keymap({
@@ -85,13 +84,11 @@ class FootnoteView {
           "Mod-y": () => redo(this.outerView.state, this.outerView.dispatch)
         })]
       }),
-      // This is the magic part
+      // 魔法发生在这个地方
       dispatchTransaction: this.dispatchInner.bind(this),
       handleDOMEvents: {
         mousedown: () => {
-          // Kludge to prevent issues due to the fact that the whole
-          // footnote is node-selected (and thus DOM-selected) when
-          // the parent editor is focused.
+          // 为了避免出现问题，当父编辑器 focus 的时候，脚注的编辑器也要 focus。
           if (this.outerView.hasFocus()) this.innerView.focus()
         }
       }

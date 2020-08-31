@@ -1,4 +1,4 @@
-!{"template": "example", "title": "ProseMirror lint example"}
+!{"template": "example", "title": "ProseMirror 拼写检查示例"}
 
 # 拼写检查示例
 
