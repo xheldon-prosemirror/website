@@ -1,7 +1,7 @@
 // lint{
-// Words you probably shouldn't use
+// 定义一些你可能不想让用户使用的值
 const badWords = /\b(obviously|clearly|evidently|simply)\b/ig
-// Matches punctuation with a space before it
+// 将标点符号与前面的空格匹配
 const badPunc = / ([,\.!?:]) ?/g
 
 function lint(doc) {
@@ -11,10 +11,10 @@ function lint(doc) {
     result.push({msg, from, to, fix})
   }
 
-  // For each node in the document
+  // 遍历在文档中的每个节点
   doc.descendants((node, pos) => {
     if (node.isText) {
-      // Scan text nodes for suspicious patterns
+      // 扫描文本节点中的可疑的匹配内容
       let m
       while (m = badWords.exec(node.text))
         record(`Try not to say '${m[0]}'`,
@@ -24,7 +24,7 @@ function lint(doc) {
                pos + m.index, pos + m.index + m[0].length,
                fixPunc(m[1] + " "))
     } else if (node.type.name == "heading") {
-      // Check whether heading levels fit under the current level
+      // 检查标题的等级是否与当前的等级匹配
       let level = node.attrs.level
       if (lastHeadLevel != null && level > lastHeadLevel + 1)
         record(`Heading too small (${level} under ${lastHeadLevel})`,
@@ -32,7 +32,7 @@ function lint(doc) {
                fixHeader(lastHeadLevel + 1))
       lastHeadLevel = level
     } else if (node.type.name == "image" && !node.attrs.alt) {
-      // Ensure images have alt text
+      // 确保图片都有一个 alt 属性
       record("Image without alt text", pos, pos + 1, addAlt)
     }
   })
