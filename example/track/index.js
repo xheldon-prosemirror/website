@@ -17,35 +17,28 @@ class Commit {
 // TrackState{
 class TrackState {
   constructor(blameMap, commits, uncommittedSteps, uncommittedMaps) {
-    // The blame map is a data structure that lists a sequence of
-    // document ranges, along with the commit that inserted them. This
-    // can be used to, for example, highlight the part of the document
-    // that was inserted by a commit.
+    // blameMap 是一种数组数据结构，它含有一系列的文档的范围，以及与其相关的提交。
+    // 这可以用来做一些很有用的事情，比如高亮某个提交的修改范围等
     this.blameMap = blameMap
-    // The commit history, as an array of objects.
+    // 提交的历史，以一个对象的数组存储
     this.commits = commits
-    // Inverted steps and their maps corresponding to the changes that
-    // have been made since the last commit.
+    // 通过自上次提交以来发生的 steps 来反转新的 step 和他们相应的 map
     this.uncommittedSteps = uncommittedSteps
     this.uncommittedMaps = uncommittedMaps
   }
 
-  // Apply a transform to this state
+  // 对当前 state 应用一个 transform
   applyTransform(transform) {
-    // Invert the steps in the transaction, to be able to save them in
-    // the next commit
+    // 在当前 transaction 中反转它的 step，以在下一次的提交中保存它们（被用来 undo）
     let inverted =
       transform.steps.map((step, i) => step.invert(transform.docs[i]))
     let newBlame = updateBlameMap(this.blameMap, transform, this.commits.length)
-    // Create a new state—since these are part of the editor state, a
-    // persistent data structure, they must not be mutated.
+    // 创建一个新的 state，因为编辑器的 state 以及它的任意一个部分，都是一个不可突变的存储结构，任何修改都会产生一个新的 state
     return new TrackState(newBlame, this.commits,
                           this.uncommittedSteps.concat(inverted),
                           this.uncommittedMaps.concat(transform.mapping.maps))
   }
-
-  // When a transaction is marked as a commit, this is used to put any
-  // uncommitted steps into a new commit.
+  // 当一个 transaction 被标记为一个 commit 的时候，下面这个函数用来将所有那些暂未提交的 step 放到下一个提交中去。
   applyCommit(message, time) {
     if (this.uncommittedSteps.length == 0) return this
     let commit = new Commit(message, time, this.uncommittedSteps,
@@ -80,8 +73,8 @@ function insertIntoBlameMap(map, from, to, commit) {
     next = map[pos]
     if (next.commit == commit) {
       if (next.to >= from) break
-    } else if (next.to > from) { // Different commit, not before
-      if (next.from < from) { // Sticks out to the left (loop below will handle right side)
+    } else if (next.to > from) { // 不同的提交，不是之前那个的话
+      if (next.from < from) { // 从左边开始（下面的循环会处理右边）
         let left = new Span(next.from, from, next.commit)
         if (next.to > to) map.splice(pos++, 0, left)
         else map[pos++] = left
@@ -184,8 +177,8 @@ function dispatch(tr) {
 
 view = window.view = new EditorView(document.querySelector("#editor"), {state, dispatchTransaction: dispatch})
 
-dispatch(state.tr.insertText("Type something, and then commit it."))
-dispatch(state.tr.setMeta(trackPlugin, "Initial commit"))
+dispatch(state.tr.insertText("输入点内容，然后提交它。"))
+dispatch(state.tr.setMeta(trackPlugin, "初始提交"))
 
 function setDisabled(state) {
   let input = document.querySelector("#message")
@@ -231,32 +224,28 @@ import {Mapping} from "prosemirror-transform"
 function revertCommit(commit) {
   let trackState = trackPlugin.getState(state)
   let index = trackState.commits.indexOf(commit)
-  // If this commit is not in the history, we can't revert it
+  // 如果一个提交不在历史操作中，我们就不能反转它
   if (index == -1) return
 
-  // Reverting is only possible if there are no uncommitted changes
+  // 提交完所有未提交的修改，反转才会被执行
   if (trackState.uncommittedSteps.length)
-    return alert("Commit your changes first!")
+    return alert("先提交你的修改！")
 
-  // This is the mapping from the document as it was at the start of
-  // the commit to the current document.
+  // 这是从当前文档初始提交到现在文档的 mapping
   let remap = new Mapping(trackState.commits.slice(index)
                           .reduce((maps, c) => maps.concat(c.maps), []))
   let tr = state.tr
-  // Build up a transaction that includes all (inverted) steps in this
-  // commit, rebased to the current document. They have to be applied
-  // in reverse order.
+  // 以当前文档为基础，在这个 commit 中构建一个包含所有反转 steps 的 transaction。
+  // 这些 step 需要以相反的顺序被应用
   for (let i = commit.steps.length - 1; i >= 0; i--) {
-    // The mapping is sliced to not include maps for this step and the
-    // ones before it.
+    // mapping 被分隔成不包括当前和之前的 step 的 mapping
     let remapped = commit.steps[i].map(remap.slice(i + 1))
     if (!remapped) continue
     let result = tr.maybeStep(remapped)
-    // If the step can be applied, add its map to our mapping
-    // pipeline, so that subsequent steps are mapped over it.
+    // 如果一个 step 可以被应用，那么添加该 step 的 map 到我们的 mapping 流，这样后续的 step 可以以当前 step 继续 mapping。
     if (result.doc) remap.appendMap(remapped.getMap(), i)
   }
-  // Add a commit message and dispatch.
+  // 添加一个提交信息，然后 dispatch
   if (tr.docChanged)
     dispatch(tr.setMeta(trackPlugin, `Revert '${commit.message}'`))
 }
