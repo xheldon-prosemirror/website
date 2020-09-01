@@ -288,7 +288,7 @@ function connectFromHash() {
   if (isID) {
     if (connection) connection.close()
     info.name.textContent = decodeURIComponent(isID[1])
-    connection = window.connection = new EditorConnection(report, "/collab-backend/docs/" + isID[1])
+    connection = window.connection = new EditorConnection(report, "https://prosemirror.net/collab-backend/docs/" + isID[1])
     connection.request.then(() => connection.view.focus())
     return true
   }
