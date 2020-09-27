@@ -112,7 +112,8 @@ let toc = [{name: "Intro", href: "#top.intro"}], output = modules.map(module => 
     return `<h3 id="${id}"><a href="#${id}">${text}</a></h3>`
   })
   let dom = new JSDOM(text);
-  let pArr = [...dom.window.document.querySelectorAll('p')];
+  // Note：文档中还可能出现列表，加上去
+  let pArr = [...dom.window.document.querySelectorAll('p'),...dom.window.document.querySelectorAll('li')];
   pArr.forEach((p, key) => {
     // 以 @cn 开头的为翻译文件，将其前一个 p 的内容放到其 title 中并删除
     if (!p.textContent.indexOf('@cn')) {
