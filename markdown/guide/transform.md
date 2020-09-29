@@ -3,10 +3,14 @@ works. They form the basis for [transactions](#state.transactions),
 and are what makes history tracking and collaborative editing
 possible.
 
+@cn [Transforms](##transform.Transform) 是 Prosemirror 的核心工作方式. 它是 [transactions](#state.transactions) 的基础, 其使得编辑历史跟踪和协同编辑成为可能.
+
 ## Why?
 
 Why can't we just mutate the document and be done with it? Or at least
 create a new version of a document and just put that into the editor?
+
+@cn 为什么我们不能直接对 document 进行修改(突变 mutate)? 或者至少新建一个全新版本的 document 然后将其放到编辑器中去呢?
 
 There are several reasons. One is code clarity. Immutable data
 structures really do lead to simpler code. But the main thing the
@@ -14,18 +18,28 @@ transform system does is to leave a _trail_ of updates, in the form of
 values that represent the individual steps taken to go from an old
 version of the document to a new one.
 
+@cn 有好几个原因. 其中之一就是代码清晰度. Immutable 数据结构确实可以造就简单的代码. 
+而且 transform 系统做的主要工作就是保留了 document 更新的 _痕迹_, transform 的一系列值代表了从旧的
+document 到新的 document 的每一个 steps 记录.
+
 The [undo history](##history) can save these steps and apply their
 inverse to go back in time (ProseMirror implements selective undo,
 which is more complicated than just rolling back to a previous state).
+
+@cn [undo history](##history) 可以保存这些 steps 然后在需要的时候反过来应用这些 steps ( Prosemirror 实现了可选择的 undo, 这比仅仅回滚之前的 state 状态更为复杂)
 
 The [collaborative
 editing](http://marijnhaverbeke.nl/blog/collaborative-editing.html)
 system sends these steps to other editors and reorders them if
 necessary so that everyone ends up with the same document.
 
+@cn [collaborative editing](http://marijnhaverbeke.nl/blog/collaborative-editing.html) (协同编辑)系统发送这些 steps, 并在必要的时候记录这些 steps, 以便每个 document 编辑者都能够有相同的 document.
+
 More generally, it is very useful for editor plugins to be able to
 inspect and react to each change as it comes in, in order to keep
 their own state consistent with the rest of the editor state.
+
+@cn 在大多数情况下, 能够对每个 document 改变(无论是来自自己还是来自协同编辑)做出相应反应对 editor plugin 来说是很有用的, 这始终能够让插件保持与 editor 的 state 同样的状态.
 
 ## Steps
 
@@ -33,13 +47,20 @@ Updates to documents are decomposed into [steps](##transform.Step)
 that describe an update. You usually don't need to work with these
 directly, but it is useful to know how they work.
 
+@cn 对于 document 的更新会被分解成一个个的 [steps](##transform.Step), 它描述了一个更新. 你一般情况下不需要直接与它打交道, 不过知道它们如何工作的原理是很有必要的.
+
 Examples of steps are [`ReplaceStep`](##transform.ReplaceStep) to
 replace a piece of a document, or
 [`AddMarkStep`](##transform.AddMarkStep) to add a mark to a given
 range.
 
+@cn Steps 的一个例子就是 Repla[`ReplaceStep`](##transform.ReplaceStep)ceStep, 
+它可以替换 document 的一小部分, 或者 [`AddMarkStep`](##transform.AddMarkStep), 可以对一个 range 应用 Mark.
+
 A step can be [applied](##transform.Step.apply) to a document to
 produce a new document.
+
+@cn 一个 Step 可以被 [applied](##transform.Step.apply) 到一个 document, 然后产生一个新的 document
 
 ```javascript
 console.log(myDoc.toString()) // → p("hello")
@@ -58,9 +79,18 @@ thing you can do. This is why [`apply`](##transform.Step.apply)
 returns a [result object](##transform.StepResult), which holds either
 a new document, _or_ an error message.
 
+@cn 应用一个 step 想对来说是比较简单的过程——它不做一些诸如插入 nodes 以保持 schema 的约束, 
+或者转换 slice 让其去适应 schema 之类的操作. 这意味着应用一个 setp 可能会失败. 
+比如如果你试图删除一个 node 的其中一个 token(就是一个 node 的开或关标签——译者注), 
+这将会使该 node 的另一个 token 未正确关闭, 这么做对你来说是没什么意义的. 
+这也就是为什么 [`apply`](##transform.Step.apply) 方法返回一个 [result object](##transform.StepResult), (如果 step apply 成功则)保持对新的 document 的引用, 
+或者(失败的时候)包含一个错误信息.
+
 You'll usually want to let [helper
 functions](##transform.Transform.replace) generate your steps for you,
 so that you don't have to worry about the details.
+
+@cn 你通常想要让 [helper functions](##transform.Transform.replace) 去为你生成 steps, 这样你就不用担心一些细节.
 
 ## Transforms
 

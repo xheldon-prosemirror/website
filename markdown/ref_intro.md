@@ -10,16 +10,28 @@
 
 ---
 
-本页面是富文本编辑器 [ProseMirror](https://prosemirror.net) 的 API 手册，它列出和描述了该库导出的全部接口。想了解更多关于它的介绍，请访问:[中文指南](https://www.xheldon.com/prosemirror-guide-chinese.html)
+This is the reference manual for the
+[ProseMirror](https://prosemirror.net) rich text editor. It lists and
+describes the full public API exported by the library. For more
+introductory material, please see the [guide](/docs/guide/).
 
-ProseMirror 由多个单独的模块构成。这个手册描述了每个模块导出的 API。例如，如果你想使用 [`prosemirror-state`](#state) 模块，你可以像下面这样导入即可：
+@cn 本页面是富文本编辑器 [ProseMirror](https://prosemirror.xheldon.com) 的 API 手册，它列出和描述了该库导出的全部接口。想了解更多关于它的介绍，请访问：[指南](/docs/guide/)
+
+ProseMirror is structured as a number of separate modules. This
+reference manual describes the exported API per module. If you want to
+use something from the [`prosemirror-state`](#state) module, for
+example, you can import it like this:
+
+@cn ProseMirror 由多个单独的模块构成。这个手册描述了每个模块导出的 API。例如，如果你想使用 [`prosemirror-state`](#state) 模块，你可以像下面这样导入即可：
 
 ```javascript
 var EditorState = require("prosemirror-state").EditorState
 var state = EditorState.create({schema: mySchema})
 ```
 
-或者使用 ES6 的语法：
+Or, using ES6 syntax:
+
+@cn 或者使用 ES6 的语法：
 
 ```javascript
 import {EditorState} from "prosemirror-state"

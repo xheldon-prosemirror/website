@@ -1,26 +1,27 @@
 <<do
   let guides = {
-    intro: "Introduction",
-    doc: "Documents",
-    schema: "Schemas",
-    transform: "Document transformations",
-    state: "The editor state",
-    view: "The view component",
-    commands: "Commands",
-    collab: "Collaborative editing"
+    intro: "介绍",
+    doc: "文档",
+    schema: "文档骨架",
+    transform: "文档转换",
+    state: "编辑器状态",
+    view: "视图组件",
+    commands: "命令",
+    collab: "协同编辑"
   }
   let toc = []
   for (let tag in guides) toc.push({name: guides[tag], href: "#" + tag})
 >>
 
-<<head {title: "ProseMirror Guide", type: "docs", toc}>>
+<<head {title: "ProseMirror 中文指南", type: "docs", toc}>>
 
-<h1>ProseMirror Guide</h1>
+<blockquote>本文用到的名词解释可以参照 <a href="https://www.xheldon.com/prosemirror-guide-chinese.html" target="_blank">这个中文翻译</a> 的开头部分，
+本文与上述中文翻译内容相同，只是纯翻译，以及为了在 <a href="/docs/ref/" target="_blank">API 手册</a> 中方便的引用该地址。</blockquote>
+<h1>ProseMirror 中文指南</h1>
 
-<p>This guide describes the various concepts used in the library, and
-how they relate to each other. To get a complete picture of the
-system, it is recommended to go through it in the order it is
-presented in, at least up to the view component section.</p>
+<p>本指南介绍了在该库中使用的各种概念，以及它们是如何相互关联的。
+为了让你对系统整体有一个印象， 推荐读者按本文的文档顺序阅读，
+或者至少（如果你没有耐心而只是想大概了解的话），读完 View 组件的那一块。</p>
 
 <<for name in guides>>
   <h2 id=<<t name>>><<t guides[name]>></h2>
