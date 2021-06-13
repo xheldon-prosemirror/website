@@ -1,3 +1,8 @@
+
+> 本文档手册上次更新日期为：**2021年6月13日**，文档更新总览请查看：[X_CHANGELOG](https://github.com/xheldon-prosemirror/prosemirror/blob/master/X_CHANGELOG.md)。
+
+> 注：自 [2020年9月29日全部翻译完成](https://twitter.com/ProseMirror/status/1310952477265727495) 以来，之后的每一次对应模块的更新都是与上游仓库进行合并，以保持翻译文档的最新版本，因此可能存在版本落后的问题，如果发现版本落后，请查看 [原始文档](https://prosemirror.net/docs/ref/)，同时在 [电报群](https://t.me/xheldon_saloon) 里找我合并一下上游仓库，我会尽快更新中文版。
+
 <b>
 译者前言：
 
