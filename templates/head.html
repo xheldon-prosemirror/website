@@ -78,7 +78,7 @@ addEventListener("load", function() {
       toc.style.bottom = toc.style.top = ""
       toc.classList.remove("fixed")
       state = "top"
-    } else if (state == "fixed" && footRect.top < tocRect.bottom) {
+    } else if (state == "fixed" && footRect.top <tocRect.bottom) {
       toc.style.bottom = footRect.height + "px"
       toc.style.top = "auto"
       toc.classList.remove("fixed")
@@ -93,7 +93,7 @@ addEventListener("load", function() {
     toc.classList.toggle("open")
   })
 })
-  </>
+</script>
 <</if>>
 
 <article>
