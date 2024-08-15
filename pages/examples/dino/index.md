@@ -9,8 +9,6 @@ ProseMirror 允许你定义你自己的 schemas，它包含了自定义的文档
 
 @HTML
 
-[![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/remix/prosemirror-demo-dino)
-
 在这个示例中，我们扩展了 [basic](https://github.com/xheldon-prosemirror/prosemirror-schema-basic) schema，将一个单独的新的节点加入其中。
 首先，我们定义一个 [node spec](##model.NodeSpec)，它描述了节点的行为和它的 DOM 表现形式。
 
